@@ -3,42 +3,45 @@ import { StyleSheet, Text, View, Button} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './src/views/homescreen';
+import Form from './src/views/form';
+import History from './src/views/history';
+import Setting from './src/views/setting';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const createSaleReport = () => {
-    
-  }
-
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="AFC Sale Report" component={HomeScreen} />
+      <Stack.Navigator 
+        screenOptions = {{
+          headerStyle: {
+            backgroundColor: '#228CDB'
+          },
+            headerTintColor: '#fff'
+        }} 
+        initialRouteName="Home"
+      >
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{title: "AFC Sale Report"}}
+        />
+        <Stack.Screen 
+          name="Form" 
+          component={Form} 
+          options={{title: "Report Form"}}
+        />
+        <Stack.Screen 
+          name="History" 
+          component={History} 
+          options={{title: "History"}}
+        />
+        <Stack.Screen 
+          name="Setting" 
+          component={Setting} 
+          options={{title: "Setting"}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-    // <View style={styles.container}>
-    //   <Text style={styles.title}>Sale Report App</Text>
-    //   <Button
-    //     onPress={createSaleReport}
-    //     title="Create Sale Report"
-    //     color="#841584"
-    //     accessibilityLabel="Create Sale Report"
-    //   />
-    //   <StatusBar style="auto" />
-    // </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    textAlign: 'center',
-    marginVertical: 8,
-  },
-});
