@@ -1,26 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TextInput, Button} from 'react-native';
 import { useFieldArray } from "react-hook-form";
 import DateSaleField from './dateSaleField';
 import DateRangePicker from './dateRangePicker';
+import { DAY_IN_SECOND } from '../constants/dayDateConst';
+import { makeDateArray } from '../utils/misc';
 
-const DAY_IN_MINUTE = 24 * 60;
-const DAY_IN_SECOND = DAY_IN_MINUTE * 60; 
-
-export default function FormList ({ control, register, getValues, watch }) {
-    
-    const { fields } = useFieldArray({ 
+export default function FormList (
+    { startDate, 
+        endDate,
+        setStartDate,
+        setEndDate, 
         control, 
-        name: "days" 
-    });
+        register, 
+        getValues, 
+        watch,
+        errors 
+    }) {
 
-    const [startDate, setStartDate] = React.useState(new Date());
-    const [endDate, setEndDate] = React.useState(new Date(startDate.valueOf() + 6*DAY_IN_SECOND*1000));
+    const { fields, update, replace } = useFieldArray({ 
+        control, 
+        name: "weekSales" 
+    });
+    // console.log("watch : ", watch())
 
     useEffect(() => {
-        console.log("useEffect watch: ", watch())
-        console.log("useEffect fields:", fields)
-    });
+        const tempArr = makeDateArray(startDate);
+        const newFields = fields.map((field, index) => {
+            return {
+                date: tempArr[index].toDateString(),
+                id: field.id,
+                sale: field.sale
+            }
+        })
+        replace(newFields)
+    }, [startDate]);
 
     return (
         <>
@@ -31,7 +45,6 @@ export default function FormList ({ control, register, getValues, watch }) {
                 setEndDate={setEndDate}
             />  
             {fields.map((field, index) => {
-                console.log(field.date)
                 return (
                     <DateSaleField 
                         key={field.id}
@@ -39,6 +52,7 @@ export default function FormList ({ control, register, getValues, watch }) {
                         item={field}
                         control={control}
                         styles={styles}
+                        errors={errors}
                     />
                 )
             })}

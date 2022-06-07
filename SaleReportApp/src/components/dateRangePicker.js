@@ -1,7 +1,6 @@
 import React from "react";
 import {Text, View, Button} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Controller } from "react-hook-form";
 
 const DAY_IN_MINUTE = 24 * 60;
 const DAY_IN_SECOND = DAY_IN_MINUTE * 60; 
