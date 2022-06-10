@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView } from 'react-native';
 import { useForm } from 'react-hook-form';
 import FormList from '../../components/saleFormList';
 import { DAY_IN_SECOND } from '../../constants/dayDateConst';
 import { makeDateArray } from '../../utils/misc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Form() {
 
-    const [startDate, setStartDate] = React.useState(new Date());
-    const [endDate, setEndDate] = React.useState(new Date(startDate.valueOf() + 6*DAY_IN_SECOND*1000));
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date(startDate.valueOf() + 6*DAY_IN_SECOND*1000));
+    // const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
 
     const { 
         control, 
@@ -17,9 +19,13 @@ export default function Form() {
         register, 
         watch,
         reset,
+        trigger,
         formState: {
             errors,
-            isSubmitSuccessful
+            isSubmitSuccessful,
+            isDirty,
+            dirtyFields,
+            isValid
         }
     } = useForm({
         mode: "onChange",
@@ -31,24 +37,33 @@ export default function Form() {
         }
     });
 
-    console.log(isSubmitSuccessful)
-
-    const onSubmit = (data) => {
-        const fields = data.weekSales
-        alert("button is pressed.")
-        if (isSubmitSuccessful) {
-            console.log("data", JSON.stringify(data))
+    const onSubmit = async (data, event) => {
+        const sales = data.weekSales
+        // if (isDirty) {
+        //     const allSales = dirtyFields?.weekSales?.filter(field => field.sale)
+        //     console.log("allSales: ", allSales)
+        // }
+        await AsyncStorage.setItem(`${startDate}-${endDate}_weekSales`, JSON.stringify(sales)) 
+        if (isValid) {
+            console.log("data", data)
         }
-        console.log("fields", fields)
+        
     };
 
     const onError = (errors, event) => {
         console.log("errors: ", errors)
     }
 
+    const getSales = async () => {
+        const result = await AsyncStorage.getItem(`${startDate}-${endDate}_weekSales`);
+        console.log("result", result)
+    }
+
     useEffect(() => {
-        reset()
-    }, [isSubmitSuccessful])
+        getSales()
+        // reset()
+        // console.log("dirtyFields: ", dirtyFields)
+    }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -59,11 +74,11 @@ export default function Form() {
                 
                 <Button
                     title="Create"
-                    // onPress={handleSubmit(() => {
+                    // onPress={handleSubmit((data) => {
                     //     try {
-                    //         console.log("data: ", )
+                    //         onSubmit(data);
                     //     } catch (err) {
-                    //         console.log("errors: ", err)
+                    //         onError(err);
                     //     }
                     // })}
                     onPress={handleSubmit(onSubmit, onError)}
