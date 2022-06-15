@@ -10,7 +10,7 @@ export default function DateSaleField ({ key, index, item, control, styles, erro
 
     return (
         <View>
-            <Text>{item.date}</Text>  
+            <Text>{`${item.month}/${item.date}/${item.year}`}</Text>  
             <Controller
                 control={control}
                 render={({ field: {onBlur, onChange, value } }) => 

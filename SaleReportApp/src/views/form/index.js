@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView } from 'react-
 import { useForm } from 'react-hook-form';
 import FormList from '../../components/saleFormList';
 import { DAY_IN_SECOND } from '../../constants/dayDateConst';
-import { makeDateArray } from '../../utils/misc';
+import { generateShareableExcel, makeDateArray, shareExcel } from '../../utils/misc';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Form() {
+export default function Form({ navigation }) {
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date(startDate.valueOf() + 6*DAY_IN_SECOND*1000));
@@ -31,23 +31,35 @@ export default function Form() {
         mode: "onChange",
         defaultValues: {
             weekSales: makeDateArray(startDate).map((d) => ({
-                date: d.toDateString(),
+                day: d.getDay(),
+                month: d.getMonth()+1,
+                date: d.getDate(),
+                year: d.getFullYear(),
                 sale: 0
             }))
         }
     });
 
     const onSubmit = async (data, event) => {
-        const sales = data.weekSales
+        const sales = data.weekSales || []
         // if (isDirty) {
         //     const allSales = dirtyFields?.weekSales?.filter(field => field.sale)
         //     console.log("allSales: ", allSales)
         // }
-        await AsyncStorage.setItem(`${startDate}-${endDate}_weekSales`, JSON.stringify(sales)) 
-        if (isValid) {
-            console.log("data", data)
-        }
+        // await AsyncStorage.setItem(`${startDate}-${endDate}_weekSales`, JSON.stringify(sales)) 
         
+        // if (isValid) {
+        //     console.log("data", data)
+        // }
+        const fileName = "CC763_MOL_9_Report" + (startDate.getMonth()+1) + "-" + startDate.getDate()
+        const shareableExcelURI = await generateShareableExcel(fileName, sales)
+        // we can store URI in AsyncStorage in Form screen and get that back and read the URI
+        // from ExcelTable screen
+        // shareExcel(shareableExcelURI)
+        navigation.navigate("Table", {
+            fileURI: shareableExcelURI,
+            fileName: fileName
+        })
     };
 
     const onError = (errors, event) => {
@@ -55,16 +67,14 @@ export default function Form() {
     }
 
     const getSales = async () => {
-        const result = await AsyncStorage.getItem(`${startDate}-${endDate}_weekSales`);
+        // const result = await AsyncStorage.getItem(`${startDate}-${endDate}_weekSales`);
         console.log("result", result)
     }
 
-    useEffect(() => {
-        getSales()
-        // reset()
-        // console.log("dirtyFields: ", dirtyFields)
-    }, [])
-
+    // useEffect(() => {
+    //     // reset()
+    //     // console.log("dirtyFields: ", dirtyFields)
+    // }, [])
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>

@@ -28,8 +28,11 @@ export default function FormList (
         const tempArr = makeDateArray(startDate);
         const newFields = fields.map((field, index) => {
             return {
-                date: tempArr[index].toDateString(),
+                date: tempArr[index].getDate(),
+                day: tempArr[index].getDay(),
+                month: tempArr[index].getMonth()+1,
                 id: field.id,
+                year: tempArr[index].getFullYear(),
                 sale: field.sale
             }
         })

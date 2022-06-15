@@ -6,6 +6,7 @@ import HomeScreen from './src/views/homescreen';
 import Form from './src/views/form';
 import History from './src/views/history';
 import Setting from './src/views/setting';
+import ExcelTable from './src/views/excelTable';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,11 @@ export default function App() {
           name="Setting" 
           component={Setting} 
           options={{title: "Setting"}}
+        />
+        <Stack.Screen
+          name="Table"
+          component={ExcelTable}
+          options={{title: "Excel Table"}}
         />
       </Stack.Navigator>
     </NavigationContainer>
