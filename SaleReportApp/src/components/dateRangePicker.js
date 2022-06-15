@@ -39,7 +39,7 @@ export default function DateRangePicker( props ) {
 
     return (
         <>
-            <Text>From: {props.startDate.toDateString()}</Text>
+            <Text>Start Date: {props.startDate.toDateString()}</Text>
             {!isStartShow && (
                 <View>
                 <Button 
@@ -56,7 +56,7 @@ export default function DateRangePicker( props ) {
                     mode="date"
                 />
             )}
-            <Text>To: {props.endDate.toDateString()}</Text>
+            <Text>End Date: {props.endDate.toDateString()}</Text>
             {!isEndShow && (
                 <View>
                     <Button 

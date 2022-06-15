@@ -10,18 +10,20 @@ export default function DateSaleField ({ key, index, item, control, styles, erro
 
     return (
         <View>
-            <Text>{`${item.month}/${item.date}/${item.year}`}</Text>  
+            <Text>{new Intl.DateTimeFormat().format(item.saleDate)}</Text>
             <Controller
                 control={control}
-                render={({ field: {onBlur, onChange, value } }) => 
-                    <TextInput
-                        style={styles.input}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        placeholder="Enter Sale here"
-                    />
-                }
+                render={({ field: {onBlur, onChange, value } }) => {
+                    return (
+                        <TextInput
+                            style={styles.input}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                            placeholder="Enter Sale here"
+                        />
+                    )
+                }}
                 name={`weekSales[${index}].sale`}             
                 rules={{
                     required: "Sale is required.",

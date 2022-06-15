@@ -17,10 +17,12 @@ export const generateShareableExcel = async (name, data) => {
     
     const modifiedData = Array.from(data, item => {
         return {
-            day: getDay(item.day),
-            month: item.month,
-            date: item.date,
-            sale: item.sale
+            day: new Intl.DateTimeFormat('en-US', {
+                weekday: "long"
+            }).format(item.saleDate),
+            month: item.saleDate.getMonth(),
+            date: item.saleDate.getDate(),
+            sale: item.saleAmount
         }
     })
     

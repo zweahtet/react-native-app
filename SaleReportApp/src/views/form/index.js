@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView } from 'react-
 import { useForm } from 'react-hook-form';
 import FormList from '../../components/saleFormList';
 import { DAY_IN_SECOND } from '../../constants/dayDateConst';
+import DateRangePicker from "../../components/dateRangePicker";
 import { generateShareableExcel, makeDateArray, shareExcel } from '../../utils/misc';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -31,11 +32,8 @@ export default function Form({ navigation }) {
         mode: "onChange",
         defaultValues: {
             weekSales: makeDateArray(startDate).map((d) => ({
-                day: d.getDay(),
-                month: d.getMonth()+1,
-                date: d.getDate(),
-                year: d.getFullYear(),
-                sale: 0
+                saleDate: d,
+                saleAmount: 0
             }))
         }
     });
@@ -51,14 +49,14 @@ export default function Form({ navigation }) {
         // if (isValid) {
         //     console.log("data", data)
         // }
-        const fileName = "CC763_MOL_9_Report" + (startDate.getMonth()+1) + "-" + startDate.getDate()
-        const shareableExcelURI = await generateShareableExcel(fileName, sales)
+        const sheetName = "CC763_MOL_9_Report" + (startDate.getMonth()+1) + "-" + startDate.getDate()
+        const shareableExcelURI = await generateShareableExcel(sheetName, sales)
         // we can store URI in AsyncStorage in Form screen and get that back and read the URI
         // from ExcelTable screen
         // shareExcel(shareableExcelURI)
         navigation.navigate("Table", {
             fileURI: shareableExcelURI,
-            fileName: fileName
+            sheetName: sheetName
         })
     };
 
@@ -78,9 +76,13 @@ export default function Form({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
-                <Text>Form</Text>
-                <Text>Choose Start Time and End Time:</Text>
-                <FormList {... {startDate, endDate, setStartDate, setEndDate, control, register, watch, errors } }/>
+                <DateRangePicker 
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                />  
+                <FormList {... {startDate, control, register, watch, errors } }/>
                 
                 <Button
                     title="Create"

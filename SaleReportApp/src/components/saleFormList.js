@@ -2,15 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TextInput, Button} from 'react-native';
 import { useFieldArray } from "react-hook-form";
 import DateSaleField from './dateSaleField';
-import DateRangePicker from './dateRangePicker';
 import { DAY_IN_SECOND } from '../constants/dayDateConst';
 import { makeDateArray } from '../utils/misc';
 
 export default function FormList (
     { startDate, 
-        endDate,
-        setStartDate,
-        setEndDate, 
         control, 
         register, 
         getValues, 
@@ -18,22 +14,18 @@ export default function FormList (
         errors 
     }) {
 
-    const { fields, update, replace } = useFieldArray({ 
+    const { fields, replace } = useFieldArray({ 
         control, 
         name: "weekSales" 
     });
-    // console.log("watch : ", watch())
 
     useEffect(() => {
-        const tempArr = makeDateArray(startDate);
+        const newDateArr = makeDateArray(startDate);
         const newFields = fields.map((field, index) => {
             return {
-                date: tempArr[index].getDate(),
-                day: tempArr[index].getDay(),
-                month: tempArr[index].getMonth()+1,
+                saleDate: newDateArr[index],
                 id: field.id,
-                year: tempArr[index].getFullYear(),
-                sale: field.sale
+                saleAmount: field.saleAmount
             }
         })
         replace(newFields)
@@ -41,12 +33,6 @@ export default function FormList (
 
     return (
         <>
-            <DateRangePicker 
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-            />  
             {fields.map((field, index) => {
                 return (
                     <DateSaleField 

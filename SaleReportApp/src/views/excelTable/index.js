@@ -3,14 +3,15 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import { readExcel } from '../../utils/misc';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import * as MailComposer from "expo-mail-composer"
+import { message, recipients } from '../../constants/emailConstants';
 
 export default function ExcelTable({ navigation, route }) {
     const [ data, setData ] = useState([])
     const [ storeID, storeName, ...body ] = data
-    const { fileURI, fileName } = route.params
+    const { fileURI, sheetName } = route.params
     
     useEffect(() => {
-        const promise = readExcel(fileURI, fileName)
+        const promise = readExcel(fileURI, sheetName)
         promise.then(data => setData(data))
         console.log("excel renders")
     }, [])
@@ -19,11 +20,11 @@ export default function ExcelTable({ navigation, route }) {
     const onSent = () => {
         console.log("hello")
         MailComposer.composeAsync({
-            recipients: ["zweahtet2014@gmail.com"],
-            subject: fileName,
+            recipients: recipients,
+            subject: sheetName,
             attachments: [fileURI],
             isHtml: true,
-            body: "Hi, <br/> Please see the attached for Sushi sales. <br/> Thank you, <br/> Daw Cho"
+            body: message
         }).catch(err => {
             console.log("sent email error: ", err)
         }).then(status => {
