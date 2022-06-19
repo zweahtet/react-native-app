@@ -40,6 +40,7 @@ export default function ExcelTable({ navigation, route }) {
                 <TableWrapper style={styles.wrapper}>
                     <Rows data={body} textStyle={styles.text} flexArr={[1.5, 1, 1, 1]}/>
                 </TableWrapper>
+                {/* <Row data={}/> */}
             </Table>
             <Button 
                 title="Sent"

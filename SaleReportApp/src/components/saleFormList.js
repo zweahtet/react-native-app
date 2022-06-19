@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TextInput, Button} from 'react-native';
 import { useFieldArray } from "react-hook-form";
 import DateSaleField from './dateSaleField';
 import { DAY_IN_SECOND } from '../constants/dayDateConst';
@@ -11,7 +10,8 @@ export default function FormList (
         register, 
         getValues, 
         watch,
-        errors 
+        errors,
+        styles
     }) {
 
     const { fields, replace } = useFieldArray({ 
@@ -48,31 +48,3 @@ export default function FormList (
         </>
     )
 }
-
-const styles = StyleSheet.create({
-    label: {
-        color: 'white',
-        margin: 20,
-        marginLeft: 0,
-    },
-    button: {
-        marginTop: 40,
-        color: 'white',
-        height: 40,
-        backgroundColor: '#ec5990',
-        borderRadius: 4,
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        padding: 8,
-        backgroundColor: '#0e101c',
-    },
-    input: {
-        backgroundColor: 'white',
-        borderColor: 'none',
-        height: 40,
-        padding: 10,
-        borderRadius: 4,
-    },
-});

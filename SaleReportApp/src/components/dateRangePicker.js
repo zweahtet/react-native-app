@@ -1,9 +1,8 @@
 import React from "react";
-import {Text, View, Button} from "react-native";
+import {Text, View, Button, StyleSheet} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
-const DAY_IN_MINUTE = 24 * 60;
-const DAY_IN_SECOND = DAY_IN_MINUTE * 60; 
+import { DAY_IN_SECOND } from "../constants/dayDateConst";
+import { styles } from "../views/form/styles";
 
 export default function DateRangePicker( props ) {
     const [isStartShow, setIsStartShow] = React.useState(false);
@@ -39,40 +38,44 @@ export default function DateRangePicker( props ) {
 
     return (
         <>
-            <Text>Start Date: {props.startDate.toDateString()}</Text>
-            {!isStartShow && (
-                <View>
-                <Button 
-                    color="purple"
-                    title="Change" 
-                    onPress={() => showPicker("start")}
-                />
-                </View>
-            )}
-            {isStartShow && (
-                <DateTimePicker
-                    value={props.startDate}
-                    onChange={onStartChange}
-                    mode="date"
-                />
-            )}
-            <Text>End Date: {props.endDate.toDateString()}</Text>
-            {!isEndShow && (
-                <View>
-                    <Button 
-                        title="Change"
-                        color="purple"
-                        onPress={() => showPicker("end")}  
+            <View>
+                <Text>Start Date: {props.startDate.toDateString()}</Text>
+                {!isStartShow && (
+                    <View style={styles.button}>
+                        <Button
+                            color={"white"}
+                            title="Change" 
+                            onPress={() => showPicker("start")}
+                        />
+                    </View>
+                )}
+                {isStartShow && (
+                    <DateTimePicker
+                        value={props.startDate}
+                        onChange={onStartChange}
+                        mode="date"
                     />
-                </View>
-            )}
-            {isEndShow && (
-                <DateTimePicker
-                    value={props.endDate}
-                    onChange={onEndChange}
-                    mode="date"
-                />
-            )}
+                )}
+            </View>
+            <View>
+                <Text>End Date: {props.endDate.toDateString()}</Text>
+                {!isEndShow && (
+                    <View style={styles.button}>
+                        <Button 
+                            title="Change"
+                            color="white"
+                            onPress={() => showPicker("end")}  
+                        />
+                    </View>
+                )}
+                {isEndShow && (
+                    <DateTimePicker
+                        value={props.endDate}
+                        onChange={onEndChange}
+                        mode="date"
+                    />
+                )}
+            </View>
         </>
     )
 }

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+// import { Button } from "@rneui/base"
 import { useForm } from 'react-hook-form';
 import FormList from '../../components/saleFormList';
 import { DAY_IN_SECOND } from '../../constants/dayDateConst';
 import DateRangePicker from "../../components/dateRangePicker";
 import { generateShareableExcel, makeDateArray, shareExcel } from '../../utils/misc';
+import { styles } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import KeyboardAvoidingWrapper from '../../components/keyboardAvoidingWrapper';
+import KeyboardShift from '../../components/keyboardShift';
 
 export default function Form({ navigation }) {
 
@@ -33,7 +37,7 @@ export default function Form({ navigation }) {
         defaultValues: {
             weekSales: makeDateArray(startDate).map((d) => ({
                 saleDate: d,
-                saleAmount: 0
+                saleAmount: undefined
             }))
         }
     });
@@ -69,61 +73,31 @@ export default function Form({ navigation }) {
         console.log("result", result)
     }
 
-    // useEffect(() => {
-    //     // reset()
-    //     // console.log("dirtyFields: ", dirtyFields)
-    // }, [])
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
+        <KeyboardAvoidingWrapper styles={styles}> 
+            <View style={styles.inner}>
                 <DateRangePicker 
                     startDate={startDate}
                     endDate={endDate}
                     setStartDate={setStartDate}
                     setEndDate={setEndDate}
+                    styles={styles}
                 />  
-                <FormList {... {startDate, control, register, watch, errors } }/>
-                
-                <Button
-                    title="Create"
-                    // onPress={handleSubmit((data) => {
-                    //     try {
-                    //         onSubmit(data);
-                    //     } catch (err) {
-                    //         onError(err);
-                    //     }
-                    // })}
-                    onPress={handleSubmit(onSubmit, onError)}
-                />
-            </ScrollView>
-        </SafeAreaView>
+                <View>
+                    <FormList {... {startDate, control, register, watch, errors, styles } }/>
+                </View>
+                <View style={styles.submitBtnContainer}>
+                    <TouchableOpacity
+                        onPress={handleSubmit(onSubmit, onError)}
+                        style={styles.submitBtn}
+                    >
+                        <Text style={styles.submitTxt}>
+                            Create
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </KeyboardAvoidingWrapper>
     )
 }
-
-const styles = StyleSheet.create({
-    label: {
-        color: 'white',
-        margin: 20,
-        marginLeft: 0,
-    },
-    button: {
-        marginTop: 40,
-        color: 'white',
-        height: 40,
-        backgroundColor: '#ec5990',
-        borderRadius: 4,
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'top',
-        padding: 8,
-    },
-    input: {
-        backgroundColor: 'white',
-        borderColor: 'none',
-        height: 40,
-        padding: 10,
-        borderRadius: 4,
-    },
-});
   
