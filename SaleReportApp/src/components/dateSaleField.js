@@ -7,6 +7,9 @@ export default function DateSaleField ({ index, item, control, styles, errors })
     if (Object.keys(errors).length != 0 && errors.weekSales[index]) {
         console.log("errors: ", errors.weekSales[index].sale)
     }
+    // const handlePress = (eve) => {
+    //     console.log(eve.nativeEvent.locationX)
+    // }
 
     return (
         <View style={styles.dateSaleContainer}>

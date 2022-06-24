@@ -1,7 +1,10 @@
 import React from "react";
-import { KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Dimensions, StatusBar, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 export default KeyboardAvoidingWrapper = (props) => {
+    const screenHeight = Dimensions.get("screen").height
+    const windowHeight = Dimensions.get("window").height
+    
     return (
         <KeyboardAvoidingView 
             style={props.styles.containter}

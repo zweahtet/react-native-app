@@ -2,7 +2,7 @@ import React from "react";
 import {Text, View, Button, StyleSheet} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { DAY_IN_SECOND } from "../constants/dayDateConst";
-import { styles } from "../views/form/styles";
+import { Icon } from '@rneui/themed';
 
 export default function DateRangePicker( props ) {
     const [isStartShow, setIsStartShow] = React.useState(false);
@@ -38,17 +38,27 @@ export default function DateRangePicker( props ) {
 
     return (
         <>
-            <View>
-                <Text>Start Date: {props.startDate.toDateString()}</Text>
+            <View style={props.styles.dateRangeContainer}>
+                <Icon
+                    name="calendar-range-outline"
+                    type="material-community"
+                    size={50}
+                />
+                <View style={props.styles.dateRangeHeaderContainer}>
+                    <Text style={props.styles.dateRangeHeader}>Start Date: {props.startDate.toDateString()}</Text>
+                    <Text style={props.styles.dateRangeHeader}>End Date: {props.endDate.toDateString()}</Text>
+                </View>
                 {!isStartShow && (
-                    <View style={styles.button}>
-                        <Button
-                            color={"white"}
-                            title="Change" 
-                            onPress={() => showPicker("start")}
-                        />
-                    </View>
+                    <Icon 
+                        name="edit"
+                        type="font-awesome"  
+                        color="#f50" 
+                        onPress={() => showPicker("start")} 
+                        size={50}
+                    />
                 )}
+            </View>
+            <View>
                 {isStartShow && (
                     <DateTimePicker
                         value={props.startDate}
@@ -57,8 +67,13 @@ export default function DateRangePicker( props ) {
                     />
                 )}
             </View>
-            <View>
-                <Text>End Date: {props.endDate.toDateString()}</Text>
+            {/* <View style={styles.dateRangeContainer}>
+                <Icon
+                    name="calendar-range-outline"
+                    type="material-community"
+                    size={40}
+                />
+                
                 {!isEndShow && (
                     <View style={styles.button}>
                         <Button 
@@ -75,7 +90,7 @@ export default function DateRangePicker( props ) {
                         mode="date"
                     />
                 )}
-            </View>
+            </View> */}
         </>
     )
 }

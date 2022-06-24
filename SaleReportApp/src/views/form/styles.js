@@ -1,15 +1,14 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const formStyles = StyleSheet.create({
     label: {
         color: 'white',
         margin: 20,
         marginLeft: 0,
     },
-    button: {
+    btnContainer: {
         height: 40,
-        backgroundColor: '#ec5990',
-        borderRadius: 4,
+        borderWidth: 2
     },
     submitBtnContainer: {
         flexDirection: "row",
@@ -44,9 +43,24 @@ export const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 4,
     },
-    rangePicker: {
-        flexDirection: "row"
-    }, 
+    dateRangeContainer: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        borderWidth: 2,
+        padding: 5
+    },
+    dateRangeHeaderContainer: {
+        flexDirection: "column",
+        marginHorizontal: 3
+    },
+    dateRangeHeader: {
+        fontSize: 16
+    },
+    formListContainer: {
+        flexWrap: "",
+        borderWidth: 2
+    },
     dateSaleContainer: {
         flex: 1,
         flexDirection: "row",
@@ -56,6 +70,7 @@ export const styles = StyleSheet.create({
         padding: 10
     },
     dateField: {
+        fontSize: 20,
         color: "blue",
         borderWidth: 2,
         padding: 10

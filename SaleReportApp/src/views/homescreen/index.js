@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { homeStyles } from './styles';
 
 export default function HomeScreen({props, navigation}) {
     const createSaleReport = () => {
@@ -15,55 +16,38 @@ export default function HomeScreen({props, navigation}) {
     }
 
     return (
-        <View>
-            <Text>Home</Text>
-            <Button
-                onPress={createSaleReport}
-                title="Create Sale Report"
-                color="#841584"
-                accessibilityLabel="Create Sale Report"
-            />
-            <Button
-                onPress={openHistory}
-                title="History"
-                color="#841584"
-                accessibilityLabel="History"
-            />
-            <Button
-                onPress={openSetting}
-                title="Setting"
-                color="#841584"
-                accessibilityLabel="Setting"
-            />
+        <View style={homeStyles.container}>
+            <View style={homeStyles.welcomeCtn}>
+                <Text>Welcome, Daw Cho!</Text>
+                <Text>Store Id</Text>
+                <Text>Store Name</Text> 
+            </View>
+            <View style={homeStyles.buttonsCtn}>
+                <TouchableOpacity
+                    onPress={createSaleReport}
+                    style={homeStyles.button}
+                >
+                    <Text style={homeStyles.buttonLabel}>
+                        Create Sale Report
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={openHistory}
+                    style={homeStyles.button}
+                >
+                    <Text style={homeStyles.buttonLabel}>
+                        History
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={openSetting}
+                    style={homeStyles.button}
+                >
+                    <Text style={homeStyles.buttonLabel}>
+                        Setting
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    label: {
-      color: 'white',
-      margin: 20,
-      marginLeft: 0,
-    },
-    button: {
-      marginTop: 40,
-      color: 'white',
-      height: 40,
-      backgroundColor: '#ec5990',
-      borderRadius: 4,
-    },
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      padding: 8,
-      backgroundColor: '#0e101c',
-    },
-    input: {
-      backgroundColor: 'white',
-      borderColor: 'none',
-      height: 40,
-      padding: 10,
-      borderRadius: 4,
-    },
-});
-  

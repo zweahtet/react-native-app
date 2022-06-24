@@ -20,11 +20,14 @@ const COLORS = {
 
 const SIZES = {
     // global
-    base: 8,
-    font: 16,
+    base: 12,
     radius: 12,
+    icon: 40,
 
     // fontSizes
+    small: 12,
+    medium: 20,
+    large: 30
 
 }
 

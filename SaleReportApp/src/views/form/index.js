@@ -6,10 +6,11 @@ import FormList from '../../components/saleFormList';
 import { DAY_IN_SECOND } from '../../constants/dayDateConst';
 import DateRangePicker from "../../components/dateRangePicker";
 import { generateShareableExcel, makeDateArray, shareExcel } from '../../utils/misc';
-import { styles } from './styles';
+import { formStyles } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import KeyboardAvoidingWrapper from '../../components/keyboardAvoidingWrapper';
 import KeyboardShift from '../../components/keyboardShift';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Form({ navigation }) {
 
@@ -74,30 +75,30 @@ export default function Form({ navigation }) {
     }
 
     return (
-        <KeyboardAvoidingWrapper styles={styles}> 
-            <View style={styles.inner}>
+        <KeyboardAwareScrollView> 
+            <View style={formStyles.inner}>
                 <DateRangePicker 
                     startDate={startDate}
                     endDate={endDate}
                     setStartDate={setStartDate}
                     setEndDate={setEndDate}
-                    styles={styles}
+                    styles={formStyles}
                 />  
-                <View>
-                    <FormList {... {startDate, control, register, watch, errors, styles } }/>
+                <View style={formStyles.formListContainer}>
+                    <FormList {... {startDate, control, register, watch, errors, styles: formStyles } }/>
                 </View>
-                <View style={styles.submitBtnContainer}>
+                <View style={formStyles.submitBtnContainer}>
                     <TouchableOpacity
                         onPress={handleSubmit(onSubmit, onError)}
-                        style={styles.submitBtn}
+                        style={formStyles.submitBtn}
                     >
-                        <Text style={styles.submitTxt}>
+                        <Text style={formStyles.submitTxt}>
                             Create
                         </Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        </KeyboardAvoidingWrapper>
+        </KeyboardAwareScrollView>
     )
 }
   

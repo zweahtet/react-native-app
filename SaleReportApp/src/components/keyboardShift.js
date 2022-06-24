@@ -1,11 +1,12 @@
 import { PropTypes } from 'prop-types';
 import React, { useEffect, useRef } from 'react';
-import { Animated, Dimensions, Keyboard, StyleSheet, TextInput, UIManager } from 'react-native';
+import { ScrollView, Animated, Dimensions, Keyboard, StyleSheet, TextInput, UIManager, TouchableWithoutFeedback } from 'react-native';
 
 const { State: TextInputState } = TextInput;
 
 export default KeyboardShift = (props) => {
-    const shift = useRef(new Animated.Value(0)).current
+    const ref = useRef(new Animated.Value(0))
+    const shift = ref.current
  
     useEffect(() => {
         const keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
@@ -17,7 +18,7 @@ export default KeyboardShift = (props) => {
     })
     
     const handleKeyboardDidShow = (event) => {
-        console.log("event: ", JSON.stringify(event.nativeEvent))
+        console.log("native event :", event)
         const { height: windowHeight } = Dimensions.get("window");
         const keyboardHeight = event.endCoordinates.height;
         const currentlyFocusedField = TextInputState.currentlyFocusedInput();
@@ -52,21 +53,16 @@ export default KeyboardShift = (props) => {
     
 
     return (
-        <Animated.View style={[styles.container, { transform: [{translateY: shift}] }]}>
-            {props.children}
-        </Animated.View>
+        <ScrollView>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <Animated.View style={[props.styles.container, { transform: [{translateY: shift}] }]}>
+                    {props.children}
+                </Animated.View>
+            </TouchableWithoutFeedback>
+        </ScrollView>
     );
 }
 
-const styles = StyleSheet.create({
-container: {
-    height: '100%',
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    width: '100%'
-}
-});
 
 KeyboardShift.propTypes = {
     children: PropTypes.func.isRequired,
