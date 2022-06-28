@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useWatch } from "react-hook-form";
 import DateSaleField from './dateSaleField';
-import { DAY_IN_SECOND } from '../constants/dayDateConst';
 import { makeDateArray } from '../utils/misc';
+import { Text } from 'react-native';
+import TotalSales from './totalSales';
 
 export default function FormList (
     { startDate, 
@@ -30,21 +31,21 @@ export default function FormList (
         })
         replace(newFields)
     }, [startDate]);
-
+    
     return (
         <>
-            {fields.map((field, index) => {
-                return (
-                    <DateSaleField 
-                        key={field.id}
-                        index={index}
-                        item={field}
-                        control={control}
-                        styles={styles}
-                        errors={errors}
-                    />
+            {fields.map((field, index) => (
+                <DateSaleField 
+                    key={field.id}
+                    index={index}
+                    item={field}
+                    control={control}
+                    styles={styles}
+                    errors={errors}
+                />
                 )
-            })}
+            )}
+            <TotalSales control={control}/>
         </>
     )
 }

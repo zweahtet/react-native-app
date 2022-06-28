@@ -76,7 +76,7 @@ export default function Form({ navigation }) {
 
     return (
         <KeyboardAwareScrollView> 
-            <View style={formStyles.inner}>
+            <View style={formStyles.container}>
                 <DateRangePicker 
                     startDate={startDate}
                     endDate={endDate}
@@ -85,7 +85,7 @@ export default function Form({ navigation }) {
                     styles={formStyles}
                 />  
                 <View style={formStyles.formListContainer}>
-                    <FormList {... {startDate, control, register, watch, errors, styles: formStyles } }/>
+                    <FormList {... {startDate, control, register, watch, errors, styles: formStyles, getValues } }/>
                 </View>
                 <View style={formStyles.submitBtnContainer}>
                     <TouchableOpacity

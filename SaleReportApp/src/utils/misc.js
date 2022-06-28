@@ -113,30 +113,18 @@ export const readExcel = async (fileURI, sheetName) => {
     })
 }
 
-const getDay = (dateNum) => {
-    switch(dateNum) {
-        case DAYS.Monday:
-            return "Monday"
-            break
-        case DAYS.Tuesday:
-            return "Tuesday"
-            break
-        case DAYS.Wednesday: 
-            return "Wednesday"
-            break
-        case DAYS.Thursday:
-            return "Thursday"
-            break
-        case DAYS.Friday: 
-            return "Friday"
-            break
-        case DAYS.Saturday:
-            return "Saturday"
-            break
-        case DAYS.Sunday: 
-            return "Sunday"
-            break
-        default:
-            return "Invalid Day"
-    }
+export const sumSales = (salesFields) => {
+    const sales = salesFields.map(field => {
+        const saleAmount = parseInt(field.saleAmount)
+        if (isNaN(saleAmount)) {
+            return 0
+        } 
+        return saleAmount
+    })
+    
+    const total = sales.reduce((accumulator, value) => {
+        return accumulator + value
+    }, 0)
+
+    return total
 }

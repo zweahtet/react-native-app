@@ -34,12 +34,13 @@ export const formStyles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        flexDirection: "column"
+        flexDirection: "column",
+        justifyContent: "flex-start"
     },
     input: {
         backgroundColor: 'white',
         height: 40,
-        minWidth: 40,
+        minWidth: "40%",
         padding: 10,
         borderRadius: 4,
     },
@@ -58,11 +59,10 @@ export const formStyles = StyleSheet.create({
         fontSize: 16
     },
     formListContainer: {
-        flexWrap: "",
-        borderWidth: 2
+        flexDirection: "column",
+        borderWidth: 2,
     },
     dateSaleContainer: {
-        flex: 1,
         flexDirection: "row",
         justifyContent: "space-around",
         borderWidth: 2,
@@ -86,9 +86,5 @@ export const formStyles = StyleSheet.create({
         textDecorationLine: "underline",
         borderWidth: 2,
         borderColor: "red"
-    },
-    inner: {
-        flex: 1,
-        justifyContent: 'center',
     },
 });

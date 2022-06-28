@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, TextInput} from 'react-native';
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 
 export default function DateSaleField ({ index, item, control, styles, errors }) {
 
@@ -19,13 +19,14 @@ export default function DateSaleField ({ index, item, control, styles, errors })
             <View style={styles.saleField}>
                 <Controller
                     control={control}
-                    render={({ field: {onBlur, onChange, value } }) => {
+                    render={({ field }) => {
                         return (
                             <TextInput
+                                // defaultValue={"0"}
                                 style={styles.input}
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
+                                onBlur={field.onBlur}
+                                onChangeText={field.onChange}
+                                value={field.value}
                                 placeholder="Enter Sale here"
                             />
                         )
