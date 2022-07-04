@@ -37,10 +37,10 @@ export const formStyles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "flex-start"
     },
-    input: {
+    saleInput: {
         backgroundColor: 'white',
         height: 40,
-        minWidth: "40%",
+        minWidth: "45%",
         padding: 10,
         borderRadius: 4,
     },
@@ -70,7 +70,7 @@ export const formStyles = StyleSheet.create({
         padding: 10
     },
     dateField: {
-        fontSize: 20,
+        fontSize: 16,
         color: "blue",
         borderWidth: 2,
         padding: 10

@@ -1,4 +1,4 @@
-import { DAYS, DAY_IN_SECOND } from "../constants/dayDateConst";
+import { DAY_IN_SECOND } from "../constants/dayDateConst";
 import XLSX from "xlsx";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -13,18 +13,20 @@ export const generateShareableExcel = async (name, data) => {
     const fileName = `${name}.xlsx`;
     console.log("Filename: ", fileName, "length: ", fileName.length)
     const fileUri = FileSystem.documentDirectory + fileName;
-    const heading = [["DAY", "MONTH", "DATE", "DAILY SALES"]]
+    const headers = [["DAY", "MONTH", "DATE", "DAILY SALES"]]
     
     const modifiedData = Array.from(data, item => {
         return {
             day: new Intl.DateTimeFormat('en-US', {
                 weekday: "long"
             }).format(item.saleDate),
-            month: item.saleDate.getMonth(),
+            month: item.saleDate.getMonth() + 1,
             date: item.saleDate.getDate(),
-            sale: item.saleAmount
+            saleAmount: item.saleAmount
         }
     })
+    
+    const total = sumSales(modifiedData)
     
     return new Promise((resolve, reject) => {
         const workbook = XLSX.utils.book_new();
@@ -33,35 +35,39 @@ export const generateShareableExcel = async (name, data) => {
         workbook.modified = now;
         // Add a sheet to work on
         // Initial Row
-        const worksheet = XLSX.utils.aoa_to_sheet([
-            ["Your ID - CC763"], ["Store Name/Number - MOL#9"]
-        ])
+        const worksheet = XLSX.utils.aoa_to_sheet([["Your ID - CC763"], ["Store Name/Number - MOL#9"]]);
         
         // Write data starting at A3
-        XLSX.utils.sheet_add_aoa(worksheet, heading, {origin: "A3"})
+        XLSX.utils.sheet_add_aoa(worksheet, headers, {origin: "A3"})
         XLSX.utils.sheet_add_json(worksheet, modifiedData, {
-            origin: "A4", skipHeader: true, header: ["day", "month", "date", "sale" ]
+            origin: "A4", skipHeader: true, header: ["day", "month", "date", "saleAmount" ]
         })
-        XLSX.utils.sheet_add_aoa(worksheet, [["TOTAL"]], {
-            origin: "C11", skipHeader: true
+        XLSX.utils.sheet_add_aoa(worksheet, [["","","TOTAL", total.toString()]], {
+            origin: "A11", skipHeader: true
         })
+
+        // calculate column witdh 
+        const max_width = modifiedData.reduce((w, data) => Math.max(w, 
+            data.day.length), 10)
+        worksheet["!cols"] = [ {wch: max_width}]
+
+        for (let row = 4; row <= 11; row++) {
+            let col = "D"
+            let cell_address = `${col}-${row}`
+            if (worksheet[cell_address]) {
+                worksheet[cell_address].s = {
+                    alignment: {
+                        vertical: "center",
+                        horizontal: "center",
+                        wrapText: "1"
+                    }
+                }
+            }
+        }
         
         // Create a workbook
         XLSX.utils.book_append_sheet(workbook, worksheet, name)
 
-        // Write to file
-        // workbook.xlsx.writeBuffer().then((buffer) => {
-        //     // Do this to use base64 encoding
-        //     const nodeBuffer = NodeBuffer.from(buffer);
-        //     const bufferStr = nodeBuffer.toString('base64');
-        //     FileSystem.writeAsStringAsync(fileUri, bufferStr, {
-        //     encoding: FileSystem.EncodingType.Base64
-        //     }).then(() => {
-        //         resolve(fileUri);
-        //     }).catch((err) => {
-        //         console.log("write error: ", err)
-        //     });
-        // });
         const wbout = XLSX.write(workbook, {
             type:"base64", 
             bookType:"xlsx"

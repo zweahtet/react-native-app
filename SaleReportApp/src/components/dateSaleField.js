@@ -23,11 +23,12 @@ export default function DateSaleField ({ index, item, control, styles, errors })
                         return (
                             <TextInput
                                 // defaultValue={"0"}
-                                style={styles.input}
+                                style={styles.saleInput}
                                 onBlur={field.onBlur}
                                 onChangeText={field.onChange}
                                 value={field.value}
                                 placeholder="Enter Sale here"
+                                keyboardType="decimal-pad"
                             />
                         )
                     }}

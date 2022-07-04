@@ -8,17 +8,15 @@ import { message, recipients } from '../../constants/emailConstants';
 export default function ExcelTable({ navigation, route }) {
     const [ data, setData ] = useState([])
     const [ storeID, storeName, ...body ] = data
-    const { fileURI, sheetName } = route.params
+    const { fileURI, sheetName, control } = route.params
     
     useEffect(() => {
         const promise = readExcel(fileURI, sheetName)
         promise.then(data => setData(data))
-        console.log("excel renders")
+        console.log("excel renders, data")
     }, [])
-    
     // "account@afcsushi.com"
     const onSent = () => {
-        console.log("hello")
         MailComposer.composeAsync({
             recipients: recipients,
             subject: sheetName,
@@ -40,7 +38,6 @@ export default function ExcelTable({ navigation, route }) {
                 <TableWrapper style={styles.wrapper}>
                     <Rows data={body} textStyle={styles.text} flexArr={[1.5, 1, 1, 1]}/>
                 </TableWrapper>
-                {/* <Row data={}/> */}
             </Table>
             <Button 
                 title="Sent"
@@ -51,7 +48,7 @@ export default function ExcelTable({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, backgroundColor: '#fff' },
+    container: { flex: 1, padding: 156, backgroundColor: '#fff' },
     head: { height: 40, backgroundColor: '#f1f8ff' },
     text: { margin: 6 },
     wrapper: { flexDirection: "row"}

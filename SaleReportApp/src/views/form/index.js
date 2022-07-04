@@ -61,7 +61,8 @@ export default function Form({ navigation }) {
         // shareExcel(shareableExcelURI)
         navigation.navigate("Table", {
             fileURI: shareableExcelURI,
-            sheetName: sheetName
+            sheetName: sheetName,
+            control: control
         })
     };
 
