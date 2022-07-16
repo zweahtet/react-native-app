@@ -1,5 +1,5 @@
 import { DAY_IN_SECOND } from "../constants/dayDateConst";
-import XLSX from "xlsx";
+import XLSX from "xlsx-js-style";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
@@ -13,7 +13,7 @@ export const generateShareableExcel = async (name, data) => {
     const fileName = `${name}.xlsx`;
     console.log("Filename: ", fileName, "length: ", fileName.length)
     const fileUri = FileSystem.documentDirectory + fileName;
-    const headers = [["DAY", "MONTH", "DATE", "DAILY SALES"]]
+    const headers = ["DAY", "MONTH", "DATE", "DAILY SALES"]
     
     const modifiedData = Array.from(data, item => {
         return {
@@ -37,8 +37,8 @@ export const generateShareableExcel = async (name, data) => {
         // Initial Row
         const worksheet = XLSX.utils.aoa_to_sheet([["Your ID - CC763"], ["Store Name/Number - MOL#9"]]);
         
-        // Write data starting at A3
-        XLSX.utils.sheet_add_aoa(worksheet, headers, {origin: "A3"})
+        // // Write data starting at A3
+        XLSX.utils.sheet_add_aoa(worksheet, [headers], {origin: "A3"})
         XLSX.utils.sheet_add_json(worksheet, modifiedData, {
             origin: "A4", skipHeader: true, header: ["day", "month", "date", "saleAmount" ]
         })
@@ -51,21 +51,29 @@ export const generateShareableExcel = async (name, data) => {
             data.day.length), 10)
         worksheet["!cols"] = [ {wch: max_width}]
 
-        for (let row = 4; row <= 11; row++) {
-            let col = "D"
-            let cell_address = `${col}-${row}`
-            if (worksheet[cell_address]) {
+        // style the worksheet
+        for (let cell_address in worksheet) {
+            // if (typeof(worksheet[i]) != "object") continue;
+            let cell = XLSX.utils.decode_cell(cell_address)
+            
+            if (cell.r >= 3) {
                 worksheet[cell_address].s = {
                     alignment: {
-                        vertical: "center",
-                        horizontal: "center",
-                        wrapText: "1"
+                        horizontal: "right"
+                    }
+                }
+            }
+            if (cell.c == 0) {
+                worksheet[cell_address].s = {
+                    alignment: {
+                        horizontal: "left"
                     }
                 }
             }
         }
-        
+
         // Create a workbook
+        // const worksheet = XLSX.utils.aoa_to_sheet([row])
         XLSX.utils.book_append_sheet(workbook, worksheet, name)
 
         const wbout = XLSX.write(workbook, {

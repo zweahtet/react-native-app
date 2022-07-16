@@ -54,16 +54,17 @@ export default function Form({ navigation }) {
         // if (isValid) {
         //     console.log("data", data)
         // }
-        const sheetName = "CC763_MOL_9_Report" + (startDate.getMonth()+1) + "-" + startDate.getDate()
+        const monthName = new Intl.DateTimeFormat('en-US', {month: "long"}).format(startDate)
+        const sheetName = `CC763_MOL_9_Sales_Report`
         const shareableExcelURI = await generateShareableExcel(sheetName, sales)
         // we can store URI in AsyncStorage in Form screen and get that back and read the URI
         // from ExcelTable screen
-        // shareExcel(shareableExcelURI)
-        navigation.navigate("Table", {
-            fileURI: shareableExcelURI,
-            sheetName: sheetName,
-            control: control
-        })
+        shareExcel(shareableExcelURI)
+        // navigation.navigate("Table", {
+        //     fileURI: shareableExcelURI,
+        //     sheetName: sheetName,
+        //     control: control
+        // })
     };
 
     const onError = (errors, event) => {
