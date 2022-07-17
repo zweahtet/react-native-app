@@ -1,96 +1,52 @@
-import React from "react";
-import {Text, View, Button, StyleSheet} from "react-native";
+import React, { useEffect } from "react";
+import {Text, View, Button, StyleSheet, Platform, TouchableOpacity, Appearance} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DAY_IN_SECOND } from "../constants/dayDateConst";
 import { Icon } from '@rneui/themed';
 
-export default function DateRangePicker( props ) {
-    const [isStartShow, setIsStartShow] = React.useState(false);
-    const [isEndShow, setIsEndShow] = React.useState(false);
+const colorScheme = Appearance.getColorScheme()
 
-    const showPicker = (which) => {
-        switch (which){
-            case "start":
-                setIsStartShow(true);
-                break;
-            case "end":
-                setIsEndShow(true);
-                break;
-            default:
-                setIsStartShow(false);
-                setIsEndShow(false);
-                break;
-        }
-    };
+export default function DateRange( props ) {
+    const [showPicker, setShowPicker] = React.useState(false)
 
-    const onStartChange = (event, date) => {
-        const currentDate = date;
-        props.setStartDate(currentDate);
-        props.setEndDate(new Date(currentDate.valueOf() + 6*DAY_IN_SECOND*1000))
-        setIsStartShow(false);
+    const handleConfirm = (date) => {
+        props.setStartDate(date);
+        props.setEndDate(new Date(date.valueOf() + 6*DAY_IN_SECOND*1000))
+        setShowPicker(false)
     }
 
-    const onEndChange = (event, date) => {
-        const currentDate = date;
-        props.setEndDate(currentDate);
-        setIsEndShow(false);
+    const handleCancel = () => {
+        setShowPicker(false)
+    }
+
+    const onPress = () => {
+        setShowPicker(true)
     }
 
     return (
         <>
-            <View style={props.styles.dateRangeContainer}>
-                <Icon
-                    name="calendar-range-outline"
-                    type="material-community"
-                    size={50}
-                />
-                <View style={props.styles.dateRangeHeaderContainer}>
-                    <Text style={props.styles.dateRangeHeader}>Start Date: {props.startDate.toDateString()}</Text>
-                    <Text style={props.styles.dateRangeHeader}>End Date: {props.endDate.toDateString()}</Text>
-                </View>
-                {!isStartShow && (
-                    <Icon 
-                        name="edit"
-                        type="font-awesome"  
-                        color="#f50" 
-                        onPress={() => showPicker("start")} 
-                        size={50}
-                    />
-                )}
+            <View style={props.styles.dateRangeHeaderContainer}>
+                <Text style={props.styles.dateRangeHeader}>Start</Text>
+                <Text>{props.startDate.toDateString()}</Text> 
             </View>
-            <View>
-                {isStartShow && (
-                    <DateTimePicker
-                        value={props.startDate}
-                        onChange={onStartChange}
-                        mode="date"
-                    />
-                )}
+            <View style={props.styles.dateRangeHeaderContainer}>
+                <Text style={props.styles.dateRangeHeader}>End</Text>
+                <Text>{props.endDate.toDateString()}</Text>
             </View>
-            {/* <View style={styles.dateRangeContainer}>
-                <Icon
-                    name="calendar-range-outline"
-                    type="material-community"
-                    size={40}
-                />
-                
-                {!isEndShow && (
-                    <View style={styles.button}>
-                        <Button 
-                            title="Change"
-                            color="white"
-                            onPress={() => showPicker("end")}  
-                        />
-                    </View>
-                )}
-                {isEndShow && (
-                    <DateTimePicker
-                        value={props.endDate}
-                        onChange={onEndChange}
-                        mode="date"
-                    />
-                )}
-            </View> */}
+            <TouchableOpacity onPress={onPress} style={props.styles.smallBtnContainer}>
+                <Text>Change Date</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+                isVisible={showPicker}
+                mode="date"
+                display="inline"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+                date={props.startDate}
+                isDarkModeEnabled
+                value={props.startDate}
+            />
         </>
     )
 }

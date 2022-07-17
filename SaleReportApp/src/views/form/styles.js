@@ -6,9 +6,12 @@ export const formStyles = StyleSheet.create({
         margin: 20,
         marginLeft: 0,
     },
-    btnContainer: {
+    smallBtnContainer: {
         height: 40,
-        borderWidth: 2
+        marginTop: 20,
+        padding: 5,
+        borderWidth: 2,
+        borderRadius: 4
     },
     submitBtnContainer: {
         flexDirection: "row",
@@ -32,7 +35,7 @@ export const formStyles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "bold"
     },
-    container: {
+    formContainer: {
         flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start"
@@ -46,14 +49,21 @@ export const formStyles = StyleSheet.create({
     },
     dateRangeContainer: {
         flexDirection: "row",
+        justifyContent: "center",
         flexWrap: "wrap",
         alignItems: "center",
         borderWidth: 2,
-        padding: 5
+        padding: 5,
+        backgroundColor: "cyan"
     },
     dateRangeHeaderContainer: {
         flexDirection: "column",
-        marginHorizontal: 3
+        marginHorizontal: 3,
+        padding: 5,
+        borderWidth: 2,
+        borderRadius: 4,
+        borderColor: "red",
+        minWidth: 60
     },
     dateRangeHeader: {
         fontSize: 16
@@ -71,9 +81,9 @@ export const formStyles = StyleSheet.create({
     },
     dateField: {
         fontSize: 16,
-        color: "blue",
         borderWidth: 2,
-        padding: 10
+        borderRadius: 4,
+        padding: 5
     },
     saleField: {
         flexDirection: "column",

@@ -4,12 +4,9 @@ import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { useForm } from 'react-hook-form';
 import FormList from '../../components/saleFormList';
 import { DAY_IN_SECOND } from '../../constants/dayDateConst';
-import DateRangePicker from "../../components/dateRangePicker";
+import DateRange from "../../components/dateRangePicker";
 import { generateShareableExcel, makeDateArray, shareExcel } from '../../utils/misc';
 import { formStyles } from './styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import KeyboardAvoidingWrapper from '../../components/keyboardAvoidingWrapper';
-import KeyboardShift from '../../components/keyboardShift';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Form({ navigation }) {
@@ -54,17 +51,16 @@ export default function Form({ navigation }) {
         // if (isValid) {
         //     console.log("data", data)
         // }
-        const monthName = new Intl.DateTimeFormat('en-US', {month: "long"}).format(startDate)
         const sheetName = `CC763_MOL_9_Sales_Report`
         const shareableExcelURI = await generateShareableExcel(sheetName, sales)
         // we can store URI in AsyncStorage in Form screen and get that back and read the URI
         // from ExcelTable screen
-        shareExcel(shareableExcelURI)
-        // navigation.navigate("Table", {
-        //     fileURI: shareableExcelURI,
-        //     sheetName: sheetName,
-        //     control: control
-        // })
+        // shareExcel(shareableExcelURI)
+        navigation.navigate("Table", {
+            fileURI: shareableExcelURI,
+            sheetName: sheetName,
+            control: control
+        })
     };
 
     const onError = (errors, event) => {
@@ -78,14 +74,16 @@ export default function Form({ navigation }) {
 
     return (
         <KeyboardAwareScrollView> 
-            <View style={formStyles.container}>
-                <DateRangePicker 
-                    startDate={startDate}
-                    endDate={endDate}
-                    setStartDate={setStartDate}
-                    setEndDate={setEndDate}
-                    styles={formStyles}
-                />  
+            <View style={formStyles.formContainer}>
+                <View style={formStyles.dateRangeContainer}>
+                    <DateRange 
+                        startDate={startDate}
+                        endDate={endDate}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                        styles={formStyles}
+                    /> 
+                </View>
                 <View style={formStyles.formListContainer}>
                     <FormList {... {startDate, control, register, watch, errors, styles: formStyles, getValues } }/>
                 </View>
